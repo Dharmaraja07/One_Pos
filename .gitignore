@@ -1,0 +1,49 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+*.log
+*.tmp
+*.bak
+
+# Environment variables & secrets
+.env
+.env.local
+*.pem
+*.key
+
+# IDE & Editors
+.idea/
+*.iml
+*.iws
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Java / Maven
+backend/**/target/
+backend/**/.flattened-pom.xml
+backend/**/dependency-reduced-pom.xml
+
+# Flutter / Dart
+apps/**/.dart_tool/
+apps/**/.flutter-plugins
+apps/**/.flutter-plugins-dependencies
+apps/**/.packages
+apps/**/build/
+apps/**/.pub-cache/
+apps/**/.pub/
+packages/**/.dart_tool/
+packages/**/.flutter-plugins
+packages/**/.flutter-plugins-dependencies
+packages/**/.packages
+packages/**/build/
+packages/**/.pub-cache/
+packages/**/.pub/
+
+# Database & local data
+infrastructure/docker/data/
+*.sqlite
+*.sqlite3
+*.db

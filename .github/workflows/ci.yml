@@ -1,0 +1,84 @@
+name: Universal POS CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-verify:
+    name: Backend Build & Test (Java 21)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: universalpos
+          POSTGRES_USER: pos_admin
+          POSTGRES_PASSWORD: pos_secret_dev_2026
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21 LTS
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Run Maven Tests & Package
+        working-directory: backend/universal-pos-core
+        run: |
+          chmod +x ./mvnw
+          ./mvnw clean verify -Dspring.profiles.active=test
+
+  frontend-verify:
+    name: Flutter Lint & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java for Android SDK requirements
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: 'stable'
+          cache: true
+
+      - name: Verify Core Package
+        working-directory: packages/core
+        run: |
+          dart pub get
+          dart analyze
+
+      - name: Verify Design System Package
+        working-directory: packages/design_system
+        run: |
+          flutter pub get
+          flutter analyze
+
+      - name: Verify POS App
+        working-directory: apps/pos_app
+        run: |
+          flutter pub get
+          flutter analyze
+          flutter test --coverage

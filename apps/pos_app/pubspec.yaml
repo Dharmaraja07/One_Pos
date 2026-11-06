@@ -1,0 +1,40 @@
+name: pos_app
+description: Universal POS Multi-Platform Client Application
+publish_to: none
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Monorepo Internal Packages
+  core:
+    path: ../../packages/core
+  design_system:
+    path: ../../packages/design_system
+
+  # State Management & Architecture
+  flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
+  equatable: ^2.0.5
+  get_it: ^7.7.0
+
+  # Navigation & Routing
+  go_router: ^14.2.0
+
+  # Networking
+  dio: ^5.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  bloc_test: ^9.1.7
+  mocktail: ^1.0.4
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
